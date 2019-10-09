@@ -31,7 +31,7 @@
     function selectAllItems() {
         let checkboxes = userList.querySelectorAll('input[type=checkbox]');
 
-
+        checkboxes.forEach(item => selectAll.checked ? item.checked = true : item.checked = false);
     }
 
     function selectTableLine(event) {
@@ -51,7 +51,8 @@
                 return page.filter(item => {
                     return exp.test(item.name);
                 })
-            }
+            };
+
             buildUsersList(filterFunction);
         }
     }
@@ -66,13 +67,35 @@
     function applySortingMethod(sortingType) {
         pageConfig.currentPage = 0;
         userList.innerHTML = '';
+
+        if(sortingType == "A"){
+            let sortingFunction = (page) => {
+                page.sort(listService.sortEmailAsc);
+                return page;
+            };
+            buildUsersList(sortingFunction);
+        }
+        if(sortingType == "Z"){
+            let sortingFunction = (page) => {
+                return page.sort(listService.sortEmailDesc);
+            };
+            buildUsersList(sortingFunction);
+        }
+        if(sortingType == "Admin"){
+            let sortingFunction = (page) => {
+                return page.sort(listService.filterAdminRole);
+            };
+            buildUsersList(sortingFunction);
+        }
+        if(sortingType == "User"){
+            let sortingFunction = (page) => {
+                return page.sort(listService.filterUserRole);
+            };
+            buildUsersList(sortingFunction);
+        }
     }
 
-
-
-
-
-    function getNextpageHandler(event) {
+    function getNextPageHandler(event) {
 
     }
 
