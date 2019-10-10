@@ -22,7 +22,7 @@
         selectAll.addEventListener('click', selectAllItems);
         userList.addEventListener('click', selectTableLine);
 
-        search.addEventListener('click', searchHandler);
+        // search.addEventListener('click', searchHandler);
         emailDropdown.addEventListener('click', sortingHandler);
         roleDropdown.addEventListener('click', sortingHandler);
         nextBtn.addEventListener('click', getNextPageHandler);
