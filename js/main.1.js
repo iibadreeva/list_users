@@ -35,7 +35,7 @@
     }
 
     function selectTableLine(event) {
-        let tableLines = event.currentPage.querySelectorAll('tr');
+        let tableLines = event.currentTarget.querySelectorAll('tr');
         tableLines.forEach(item => item.classList.remove('table-active'));
         event.target.closest('tr').classList.add('table-active');
     }
@@ -83,40 +83,53 @@
         }
         if(sortingType == "Admin"){
             let sortingFunction = (page) => {
-                return page.sort(listService.filterAdminRole);
+                return page.filter(listService.filterAdminRole);
             };
+
             buildUsersList(sortingFunction);
         }
         if(sortingType == "User"){
             let sortingFunction = (page) => {
-                return page.sort(listService.filterUserRole);
+                return page.filter(listService.filterUserRole);
             };
             buildUsersList(sortingFunction);
         }
     }
 
     function getNextPageHandler(event) {
-
+        event && event.preventDefault();
+        buildUsersList();
+        if(isMaxPage()){
+            blockNextPage();
+            countStars();
+        }
     }
 
     function isMaxPage() {
-        return (pageConfig.currentPage * pageConfig.itemsPerPage) > userListData.length;
+        return (pageConfig.currentPage * pageConfig.itemsPerPage) >= userListData.length;
     }
     function blockNextPage() {
-        
+        nextBtn.classList.add('disabled');
     }
     function countStars() {
-
+        let stats = userListData.reduce(function (sum, item) {
+            (item.role == 'Admin') ? sum.admins++ : sum.users++;
+            return sum;
+        }, {admins: 0, users: 0});
+        statsInfo.innerHTML = `Статистика системы. Админов: ${stats.admins}, Пользователей: ${stats.users}`;
     }
     function getNextPage() {
-
+        let start = pageConfig.itemsPerPage * pageConfig.currentPage;
+        let end = pageConfig.itemsPerPage + start;
+        pageConfig.currentPage++;
+        return userListData.slice(start, end);
     }
 
     function buildUsersList(filterSortFunction) {
         let page = getNextPage();
         filterSortFunction && (page = filterSortFunction(page));
         let result = page.map(item => listService.tableTemplate(item));
-        userList.innerText += result.join('');
+        userList.innerHTML += result.join("");
         listService.initTooltip();
     }
 

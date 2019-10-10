@@ -1,7 +1,7 @@
 var listService = (function () {
     function duplicateArray(arr, count) {
         let res = [];
-        for(let i = 0; i <= count; i++){
+        for(let i = 1; i <= count; i++){
             res = res.concat(arr.map(a => Object.assign({}, a)))
         }
         return res;
@@ -28,7 +28,16 @@ var listService = (function () {
     }
     
     function filterAdminRole(item) {
-        return item.role == 'Admin';
+        // let res = [];
+        // if(item.role == 'Admin'){
+        //     res.push(item)
+        // }
+        //
+        // console.log('-',item.role , res)
+        // return res;
+        let res = (item.role == 'Admin') ? 1 : 0;
+        console.log(res)
+        return res;
     }
     
     function filterUserRole(item) {
@@ -36,7 +45,7 @@ var listService = (function () {
     }
     
     function initTooltip() {
-        $('[data-toggle="tooltip"]').tooltip();        
+        $('[data-toggle="tooltip"]').tooltip()
     }
     
     function tableTemplate(item) {
