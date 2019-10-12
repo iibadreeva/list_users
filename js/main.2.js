@@ -47,14 +47,7 @@
             pageConfig.currentPage = 0;
             userList.innerHTML = '';
 
-            let filterFunction = (page) => {
-                let exp = new RegExp(event.target.value, 'i');
-                return page.filter(item => {
-                    return exp.test(item.name);
-                })
-            };
-
-            buildUsersList(filterFunction);
+            buildUsersList(config.sortingConfig['Find']);
         }
     }
 
@@ -67,34 +60,8 @@
 
     function applySortingMethod(sortingType) {
         pageConfig.currentPage = 0;
-        userList.innerHTML = '';
-
-        if(sortingType == "A"){
-            let sortingFunction = (page) => {
-                page.sort(listService.sortEmailAsc);
-                return page;
-            };
-            buildUsersList(sortingFunction);
-        }
-        if(sortingType == "Z"){
-            let sortingFunction = (page) => {
-                return page.sort(listService.sortEmailDesc);
-            };
-            buildUsersList(sortingFunction);
-        }
-        if(sortingType == "Admin"){
-            let sortingFunction = (page) => {
-                return page.filter(listService.filterAdminRole);
-            };
-
-            buildUsersList(sortingFunction);
-        }
-        if(sortingType == "User"){
-            let sortingFunction = (page) => {
-                return page.filter(listService.filterUserRole);
-            };
-            buildUsersList(sortingFunction);
-        }
+        userList.innerHTML = "";
+        buildUsersList(config.sortingConfig[sortingType]);
     }
 
     function getNextPageHandler(event) {
@@ -112,7 +79,7 @@
     function blockNextPage() {
         nextBtn.classList.add('disabled');
     }
-    function countStars() {
+    function countStars()  {
         let stats = userListData.reduce(function (sum, item) {
             (item.role == 'Admin') ? sum.admins++ : sum.users++;
             return sum;
