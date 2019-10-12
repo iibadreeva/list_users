@@ -28,13 +28,6 @@ var listService = (function () {
     }
     
     function filterAdminRole(item) {
-        // let res = [];
-        // if(item.role == 'Admin'){
-        //     res.push(item)
-        // }
-        //
-        // console.log('-',item.role , res)
-        // return res;
         let res = (item.role == 'Admin') ? 1 : 0;
         console.log(res)
         return res;
@@ -69,8 +62,36 @@ var listService = (function () {
     </tr>`;
     }
     
-    function detailsTemplate() {
-
+    function detailsTemplate(item) {
+        return `<form class="needs-validation" novalidate="">
+            <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="first name">Name</label>
+                <input type="text" class="form-control" value="${item.name}" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="first name">Role</label>
+                <input type="text" class="form-control" value="${item.role}" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="last name">Login</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                    </div>
+                    <input type="text" class="form-control" value="${item.username}" readonly>
+                </div>                
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="email">Email <span class="text-muted">Опционално</span> </label>
+                <input type="text" class="form-control" value="${item.email}" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" value="${item.address.zipcode}, ${item.address.city}, ${item.address.street}" readonly>
+            </div>
+            </div>
+        </form>`
     }
 
     function inheritance(parent, child) {

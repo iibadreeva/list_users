@@ -7,6 +7,11 @@
     const emailDropdown = document.querySelector('#dropdown-email');
     const roleDropdown = document.querySelector('#dropdown-role');
     const nextBtn = document.querySelector('#next-page');
+    const backBtn = document.querySelector('#back-btn');
+
+    const detailsView = document.querySelector('#details-view');
+    const mainView = document.querySelector('#main-view');
+    const detailsItems = document.querySelector('#details-items');
 
     let userListData = [];
     let pageConfig = {
@@ -20,12 +25,15 @@
 
     function initListeners() {
         selectAll.addEventListener('click', selectAllItems);
-        userList.addEventListener('click', selectTableLine);
+        // userList.addEventListener('click', selectTableLine);
+        userList.addEventListener('click', selectLineHandler);
 
         search.addEventListener('keyup', searchHandler);
         emailDropdown.addEventListener('click', sortingHandler);
         roleDropdown.addEventListener('click', sortingHandler);
+
         nextBtn.addEventListener('click', getNextPageHandler);
+        backBtn.addEventListener('click', openMain);
     }
 
     function selectAllItems() {
@@ -38,6 +46,24 @@
         let tableLines = event.currentTarget.querySelectorAll('tr');
         tableLines.forEach(item => item.classList.remove('table-active'));
         event.target.closest('tr').classList.add('table-active');
+    }
+
+    function selectLineHandler(event) {
+        let isButton = event.target.getAttribute('data-row-id');
+        isButton ? openDetail(isButton) : selectTableLine(event);
+    }
+
+    function openDetail(buttonId) {
+        listService.hideElements([mainView]);
+        listService.showElements([detailsView]);
+
+        let user = userListData.filter(item => item.id == buttonId);
+        detailsItems.innerHTML = listService.detailsTemplate(user[0]);
+    }
+
+    function openMain() {
+        listService.hideElements([detailsView]);
+        listService.showElements([mainView]);
     }
 
     function searchHandler(event) {
